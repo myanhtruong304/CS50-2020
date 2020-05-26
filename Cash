@@ -1,0 +1,62 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+
+int main (void)
+{
+    int quarters = 25, dimes = 10, nickels = 5, pennies = 1;
+    float f; //get user input
+    int left; //how much change left
+    int coins = 0; //how many coins have been returned
+    int counter; //count how many coins have been changed for each loop
+    int changeOwed; //convert float value to integer
+
+    //check non-negative value
+    do
+    {
+        f = get_float("Change owed: ");
+    }
+    while (f < 0);
+    changeOwed = round(f*100); //rounded float to int
+
+    //quarters
+
+    for (int i = changeOwed; i >= quarters; i = i - quarters)
+    {
+        counter = counter + 1;
+    }
+    left = changeOwed - quarters*counter;
+    coins = counter + coins; // count how many coins in hand
+    counter = 0; // return counter to 0 before next condition
+
+    //dimes
+
+    for (int i = left; i >= dimes; i = i - dimes)
+    {
+        counter = counter + 1;
+    }
+    left = left - dimes*counter;
+    coins = counter + coins;
+    counter = 0;
+
+    //nickels
+
+    for (int i = left; i >= nickels; i = i - nickels)
+    {
+        counter = counter + 1;
+    }
+    left = left - nickels*counter;
+    coins = counter + coins;
+    counter = 0;
+
+    //pennies
+
+    for (int i = left; i >= pennies; i = i - pennies)
+    {
+        counter = counter + 1;
+    }
+    left = left - pennies*counter;
+    coins = counter + coins;
+
+    printf("%i\n", coins);
+}
