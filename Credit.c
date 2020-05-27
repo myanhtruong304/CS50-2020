@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
+long countDigits (long num, int num1, int num2);
 int main(void)
 {
     long ld = 0; //2 last digits of the string
@@ -25,9 +26,9 @@ int main(void)
 
     for (int x = 100; cnum > 0; x = 100)
     {
-        ld = cnum % x;
-        fsold = (ld - ld % 10) / 10;
-        cnum = (cnum - ld) / x;
+        ld = cnum % x; // 2 last digits is modulo ccnum by 100
+        fsold = (ld - ld % 10) / 10; // first of 2 last digits
+        cnum = (cnum - ld) / x; // number of digits left after take out 2 last digits
         p = 2 * fsold;
         if (p >= 10)
         {
@@ -53,14 +54,10 @@ int main(void)
             storeCnum1 = storeCnum1 / 10;
             couDig++;
         }
-        
+
         if (couDig == 15)
         {
-            do
-            {
-                storeCnum2 = (storeCnum2 - storeCnum2 % 10) / 10;
-                couDig--;
-            }
+            storeCnum2 = countDigits (storeCnum2,couDig,2); // reference storeCnum2 = result of the function bc it C won't return result outside function.
             while (couDig > 2);
             if (storeCnum2 == 34 || storeCnum2 == 37)
             {
@@ -73,12 +70,7 @@ int main(void)
         }
         else if (couDig == 13)
         {
-            do
-            {
-                storeCnum2 = (storeCnum2 - storeCnum2 % 10)/ 10;
-                couDig--;
-            }
-            while (couDig > 1);
+            storeCnum2 = countDigits (storeCnum2,couDig,1);
             if (storeCnum2 == 4)
             {
                 printf("VISA\n");
@@ -90,12 +82,7 @@ int main(void)
         }
         else if (couDig == 16)
         {
-            do
-            {
-                storeCnum2 = (storeCnum2 - storeCnum2 % 10) / 10;
-                couDig--;
-            }
-            while (couDig > 2);
+            storeCnum2 = countDigits (storeCnum2,couDig,2);
             if (storeCnum2 == 51 || storeCnum2 == 52 || storeCnum2 == 53 || storeCnum2 == 54 || storeCnum2 == 55)
             {
                 printf("MASTERCARD\n");
@@ -118,4 +105,19 @@ int main(void)
             printf("INVALID\n");
         }
     }
+}
+
+
+
+
+
+long countDigits (long num, int num1, int num2)
+{
+    do
+    {
+        num = (num - num % 10) / 10;
+        num1--;
+    }
+    while (num1 > num2);
+    return  num;
 }
