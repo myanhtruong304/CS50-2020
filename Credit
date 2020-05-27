@@ -58,7 +58,6 @@ int main(void)
         if (couDig == 15)
         {
             storeCnum2 = countDigits (storeCnum2,couDig,2); // reference storeCnum2 = result of the function bc it C won't return result outside function.
-            while (couDig > 2);
             if (storeCnum2 == 34 || storeCnum2 == 37)
             {
                 printf("AMEX\n");
