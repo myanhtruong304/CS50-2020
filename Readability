@@ -1,0 +1,68 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
+int sent(char value, char value2, int num2);
+int main(void)
+{
+    string s = get_string("Text: ");
+    int cSen = 0;
+    int cWor = 0;
+    int n = 0; // number of characters
+    float grade;
+
+    for (int i = 0, l = strlen(s); i <= l ; i++)
+    {
+        if (toupper(s[i]) >= 65 && toupper(s[i]) <= 90)
+        {
+            n++;
+        }
+    }
+    for (int i = 0, l = strlen(s); i < l ; i++)
+    {
+        cSen = sent(s[i], s[i + 1], cSen);
+    }
+
+    for (int i = 0, l = strlen(s); i <= l ; i++)
+    {
+        if (s[i] != 32 && s[i + 1] == 32)
+        {
+            cWor++;
+        }
+    }
+    cWor++;
+    grade = round((float)(0.0588 * ((float) n / cWor) * 100 - 0.296 * ((float)cSen / cWor) * 100 - 15.8));
+
+    if (grade >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else if (grade < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else
+    {
+        printf("Grade %.0f\n", grade);
+    }
+}
+
+
+int sent(char value, char value2, int num2)
+{
+    if (value != value2 && value2 == 46)
+    {
+        num2++;
+    }
+    else if (value != value2 && value2 == 33)
+    {
+        num2++;
+    }
+    else if (value != value2 && value2 == 63)
+    {
+        num2++;
+    }
+    return num2;
+}
