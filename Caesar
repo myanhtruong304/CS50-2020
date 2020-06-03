@@ -1,0 +1,51 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(int argc, string argv[])
+{
+    int a = 0;
+    int i;
+    if (argc == 2)
+    {
+        while (a < strlen(argv[1]))
+        {
+            if (isdigit(argv[1][a]) == 0)
+            {
+                printf("Usage: ./caesar key\n");
+                exit(1);
+            }
+            else
+            {
+                a++;
+            }
+        }
+        i = atoi(argv[1]);
+
+        string text = get_string("Plain Text: ");
+        printf("ciphertext: ");
+        for (int e = 0; e < strlen(text); e++)
+        {
+            if (text[e] >= 65 && text[e] <= 90)
+            {
+                printf("%c", 65 + ((text[e] - 65) + i) % 26);
+            }
+            else if (text[e] >= 97 && text[e] <= 122)
+            {
+                printf("%c", 97 + ((text[e] - 97) + i) % 26);
+            }
+            else
+            {
+                printf("%c",text[e]);
+            }
+        }
+        printf("\n");
+    }
+    else
+    {
+        return 1;
+    }
+    return 0;
+}
