@@ -1,0 +1,151 @@
+#include "helpers.h"
+#include <math.h>
+
+// Convert image to grayscale
+void grayscale(int height, int width, RGBTRIPLE image[height][width])
+{
+    // loop through every pixel of the image
+    // turn these pixel into gray
+    float x = 0;
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            // devide by 3.0 instead of 3 in order to define image.values will be devided by a float.
+            // 3 is consider as a int, it will return an integer instead of a float, this causing errors.
+            x = round((image[i][j].rgbtRed + image[i][j].rgbtBlue + image[i][j].rgbtGreen )/ 3.0);
+            image[i][j].rgbtRed = x;
+            image[i][j].rgbtGreen = x;
+            image[i][j].rgbtBlue = x;
+        }
+    }
+    return;
+}
+
+// Convert image to sepia
+void sepia(int height, int width, RGBTRIPLE image[height][width])
+{
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            float r, g, b;
+            r = image[i][j].rgbtRed;
+            g = image[i][j].rgbtGreen;
+            b = image[i][j].rgbtBlue;
+
+            if(round(0.393 * r + 0.769  * g + .189 * b) > 255)
+            {
+                image[i][j].rgbtRed = 255;
+            }
+            else
+            {
+                image[i][j].rgbtRed = round(0.393 * r + 0.769  * g + .189 * b);
+            }
+
+            if(round(0.349 * r + .686 * g + .168 * b) > 255)
+            {
+                image[i][j].rgbtGreen = 255;
+            }
+            else
+            {
+                image[i][j].rgbtGreen = round(0.349 * r + .686 * g + .168 * b);
+            }
+
+            if(round(0.272 * r + 0.534 * g + 0.131 * b) > 255)
+            {
+                image[i][j].rgbtBlue = 255;
+            }
+            else
+            {
+                image[i][j].rgbtBlue = round(0.272 * r + 0.534 * g + 0.131 * b);
+            }
+        }
+    }
+    return;
+}
+
+// Reflect image horizontally
+void reflect(int height, int width, RGBTRIPLE image[height][width])
+{
+    // create a temporary struct to store pixel which will be re-allocated
+    RGBTRIPLE temp;
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width/2 ; j++)
+        {
+            temp =  image[i][j];
+            image[i][j] = image[i][width - j - 1];
+            image[i][width - j - 1] = temp;
+        }
+    }
+    return;
+}
+
+// Blur image
+void blur(int height, int width, RGBTRIPLE image[height][width])
+{
+    // u is a temporary struct for image[][]. values of u[][] will be remained
+    RGBTRIPLE u[height][width];
+    
+    // define count as float in oder to get a float from the equation of red, green, blue triple
+    // try to store value inside a struct instead of separate them into 3 variables but failed.
+    float count = 0;
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+
+    // copy image[][] to u[][]
+    for(int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            u[i][j] = image[i][j];
+        }
+    }
+
+    // loop through every original picels of image[][]
+    for (int i = 0; i < height; i++)
+    {
+        for(int j = 0; j < width; j++)
+        {
+            // set value for rgb triple to 0 for every loop
+            red = 0;
+            green = 0;
+            blue = 0;
+            count = 0;
+            // sum up values of all pixel within 1 row and column
+            for(int x = i - 1; x < i + 2; x++)
+            {
+                // skip iteration if it goes outside of the image
+                for(int y = j - 1; y < j + 2; y++)
+                {
+                    if(x < 0 || y < 0 || x > height - 1 || y > width - 1)
+                    {
+                        continue;
+                    }
+                    
+                    // sum up the values
+                    // this part I tried to assign those u[x][y].values to a struct but failed
+                    // so I decided to assign every single of the color of it.
+                    red += u[x][y].rgbtRed;
+                    green += u[x][y].rgbtGreen;
+                    blue += u[x][y].rgbtBlue;
+                    
+                    // count the elements of the formed box
+                    count++;
+                }
+            }
+            // take the average of RGB triple
+            red = round(red / count);
+            green = round(green / count);
+            blue = round(blue / count);
+            
+            // change the value of old pixels to new ones.
+            image[i][j].rgbtRed = red;
+            image[i][j].rgbtBlue = blue;
+            image[i][j].rgbtGreen = green;
+        }
+    }
+    return;
+}
