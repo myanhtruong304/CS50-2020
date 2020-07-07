@@ -89,7 +89,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
     RGBTRIPLE u[height][width];
     
     // define count as float in oder to get a float from the equation of red, green, blue triple
-    // try to store value inside a struct instead of separate them into 3 variables but failed.
+    // try to store value inside a struct instead of separating them into 3 variables but failed.
     float count = 0;
     int red = 0;
     int green = 0;
@@ -104,7 +104,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
         }
     }
 
-    // loop through every original picels of image[][]
+    // loop through every original pixels of image[][]
     for (int i = 0; i < height; i++)
     {
         for(int j = 0; j < width; j++)
